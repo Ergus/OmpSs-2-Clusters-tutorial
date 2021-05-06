@@ -111,9 +111,11 @@ int main(int argc, char* argv[])
 
 	printf("# Finished algorithm...\n");
 
+#ifdef WRITE_OUTPUT
 	printmatrix_task(A, dim, dim, "matvec");
 	printmatrix_task(B, dim, 1, "matvec");
 	printmatrix_task(C, 1, dim, "matvec");
+#endif
 
 	#pragma oss taskwait
 
