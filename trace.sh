@@ -19,7 +19,7 @@
 export EXTRAE_ON=1
 export EXTRAE_CONFIG_FILE=extrae.xml
 
-export NANOS6_CONFIG_OVERRIDE="version.debug=false,version.instrument="extrae",cluster.disable_remote=false"
+export NANOS6_CONFIG_OVERRIDE="version.debug=false,version.instrument="extrae""
 
 # Remove previous traces
 if  [ -z ${MPI_LOCALRANKID} ] || [ $MPI_LOCALRANKID -eq 0 ]; then
