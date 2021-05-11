@@ -22,7 +22,16 @@ export EXTRAE_CONFIG_FILE=extrae.xml
 export NANOS6_CONFIG_OVERRIDE="version.debug=false,version.instrument="extrae""
 
 # Remove previous traces
-if  [ -z ${MPI_LOCALRANKID} ] || [ $MPI_LOCALRANKID -eq 0 ]; then
+if [ -z ${PMI_RANK} ] && [ -z ${MPI_LOCALRANKID} ]; then
+	# Note: there is a race condition if rank 1 also deletes the "old" traces
+	# because it may actually delete the new ones created by rank 0. If the
+	# right environment variables do not exist then the safe option is to
+	# not delete the old traces
+	echo "*** PMI_RANK and MPI_LOCALRANKID not set: do not delete old trace ***"
+fi
+
+if  ( [ ${PMI_RANK} ] && [ $PMI_RANK -eq 0 ] )  \
+	|| ( [ ${MPI_LOCALRANKID} ] && [ $MPI_LOCALRANKID -eq 0 ] ); then
 	echo "Deleting old traces"
 	rm -rf TRACE.* set-0/ *.prv *.row *.pcf
 fi
